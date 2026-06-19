@@ -1,29 +1,29 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 #
 # ==============================================================================
 #  setup_project.sh  —  Project Factory for the Student Attendance Tracker
 # ==============================================================================
-#  Infrastructure as Code (IaC) bootstrapper.
+#  Infrastructure as Code [IaC] bootstrapper.
 #
 #  What this script does, end to end:
 #    1. Directory Architecture .... builds attendance_tracker_{input}/ with the
 #                                   exact layout the Python app expects.
 #    2. File Generation ........... writes attendance_checker.py, assets.csv,
 #                                   config.json and reports.log from heredocs
-#                                   (no manual copying => reproducible).
+#                                   [no manual copying => reproducible].
 #    3. Dynamic Configuration ..... prompts with `read`, rewrites config.json
 #                                   thresholds in-place with `sed`.
-#    4. Process Management ........ a `trap` catches SIGINT (Ctrl+C), archives
+#    4. Process Management ........ a `trap` catches SIGINT [Ctrl+C], archives
 #                                   the half-built project, then cleans up.
 #    5. Environment Validation .... a health check confirms python3 is present
 #                                   and the directory structure is intact.
 #
 #  Usage:
-#    ./setup_project.sh [deploy_agent_africancontrarian]
-#       - If [deploy_agent_africancontrarian] is omitted, the script will prompt for it.
+#    ./setup_project.sh [deploy_agent]
+#       - If [deploy_agent] is omitted, the script will prompt for it.
 # ==============================================================================
 
-set -u  # treat unset variables as errors (catches typos early)
+set -u  # treat unset variables as errors [catches typos early]
 
 # ------------------------------------------------------------------------------
 # Globals — recorded up front so the trap can always find its way home.
@@ -32,7 +32,7 @@ START_DIR="$(pwd)"      # where the user launched the script from
 PROJECT_DIR=""          # set once we know the {input}; used by the trap
 CONFIG_PATH=""          # full path to the config.json we will sed-edit
 
-# Small colour helpers (degrade gracefully if the terminal has no colour).
+# Small colour helpers [degrade gracefully if the terminal has no colour].
 if [ -t 1 ]; then
     C_OK=$'\033[0;32m'; C_WARN=$'\033[0;33m'; C_ERR=$'\033[0;31m'
     C_INFO=$'\033[0;36m'; C_BOLD=$'\033[1m'; C_RST=$'\033[0m'
@@ -46,17 +46,17 @@ warn()  { echo "${C_WARN}[!]${C_RST} $*"; }
 err()   { echo "${C_ERR}[x]${C_RST} $*"; }
 
 # ==============================================================================
-# 3 (defined early so it is armed the moment the project dir exists).
+# 3 [defined early so it is armed the moment the project dir exists].
 # PROCESS MANAGEMENT: the SIGINT trap.
 # ==============================================================================
 # If the user hits Ctrl+C while the project is being built, we don't want to
 # leave a half-finished mess behind. Instead we:
-#   (a) snapshot whatever exists so far into an archive, then
-#   (b) delete the incomplete directory so the workspace stays clean.
+#   [a] snapshot whatever exists so far into an archive, then
+#   [b] delete the incomplete directory so the workspace stays clean.
 # ------------------------------------------------------------------------------
 cleanup_on_interrupt() {
     echo
-    warn "Interrupt (Ctrl+C) received — rolling back this deployment."
+    warn "Interrupt [Ctrl+C] received — rolling back this deployment."
 
     # Always operate from the launch directory so relative paths behave.
     cd "$START_DIR" 2>/dev/null || true
@@ -83,8 +83,8 @@ cleanup_on_interrupt() {
     exit 130   # 128 + SIGINT(2) — the conventional exit code for Ctrl+C
 }
 
-# Arm the trap right away. (Harmless before PROJECT_DIR is set: the guard above
-# simply finds nothing to archive.)
+# Arm the trap right away. [Harmless before PROJECT_DIR is set: the guard above
+# simply finds nothing to archive.]
 trap cleanup_on_interrupt SIGINT
 
 # ==============================================================================
@@ -134,7 +134,7 @@ mkdir -p "${PROJECT_DIR}/Helpers" "${PROJECT_DIR}/reports"
 ok "Created ${PROJECT_DIR}/ with Helpers/ and reports/"
 
 # ==============================================================================
-# 2. FILE GENERATION (heredocs — the IaC core: files are *code*, not copies)
+# 2. FILE GENERATION [heredocs — the IaC core: files are *code*, not copies]
 # ==============================================================================
 
 # --- 2a. The main application logic -------------------------------------------
@@ -199,7 +199,7 @@ diana@example.com,Diana Prince,15,0
 CSVEOF
 ok "Wrote Helpers/assets.csv"
 
-# --- 2c. The configuration (default thresholds; sed may rewrite below) --------
+# --- 2c. The configuration [default thresholds; sed may rewrite below] --------
 cat > "${PROJECT_DIR}/Helpers/config.json" <<'JSONEOF'
 {
     "thresholds": {
@@ -217,7 +217,7 @@ ok "Wrote Helpers/config.json"
 ok "Initialised reports/reports.log"
 
 # ==============================================================================
-# 3b. DYNAMIC CONFIGURATION  (read + sed in-place edit)
+# 3b. DYNAMIC CONFIGURATION  [read + sed in-place edit]
 # ==============================================================================
 echo
 read -r -p "Update attendance thresholds now? [y/N]: " UPDATE_CHOICE
@@ -254,14 +254,14 @@ esac
 
 # ==============================================================================
 # Interrupt-test window — gives a clear moment to demo the trap on video.
-# Press Ctrl+C here (or at any prompt above) to trigger archive + cleanup.
+# Press Ctrl+C here [or at any prompt above] to trigger archive + cleanup.
 # ==============================================================================
 echo
-info "Finalising deployment... (press ${C_BOLD}Ctrl+C${C_RST}${C_INFO} now to test the archive trap)"
+info "Finalising deployment... [press ${C_BOLD}Ctrl+C${C_RST}${C_INFO} now to test the archive trap]"
 sleep 3
 
 # ==============================================================================
-# 4. ENVIRONMENT VALIDATION (Health Check)
+# 4. ENVIRONMENT VALIDATION [Health Check]
 # ==============================================================================
 echo
 echo "${C_BOLD}--- Health Check ---${C_RST}"
@@ -300,7 +300,7 @@ if [ "$STRUCTURE_OK" = true ]; then
     echo "    python3 attendance_checker.py"
     echo "    cat reports/reports.log"
 else
-    err "Deployment finished with structural problems (see above)."
+    err "Deployment finished with structural problems [see above]."
     exit 1
 fi
 
