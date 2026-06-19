@@ -38,7 +38,7 @@ chmod +x setup_project.sh
 During the run the script will:
 
 1. Create the directory architecture above.
-2. Generate all four files from scratch (heredocs — nothing is copied manually).
+2. Generate all four files from scratch [heredocs — nothing is copied manually].
 3. Ask **`Update attendance thresholds now? [y/N]`**
    - Answer `y` to type new **Warning** [default `75`] and **Failure** [default `50`]
      percentages. These are written into `config.json` *in place* using `sed`.
@@ -109,4 +109,4 @@ The archive base name follows the spec: `attendance_tracker_{input}_archive`
 
 - A POSIX shell environment with **Bash** [uses `[[ ]]`, `${var,,}`, `sed -E`].
 - **Python 3** to run the generated `attendance_checker.py`.
-- `tar` (standard on Linux/macOS) for the archive feature.
+- `tar` [standard on Linux/macOS] for the archive feature.
