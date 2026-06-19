@@ -1,10 +1,12 @@
 # deploy_agent — Attendance Tracker Project Factory
 
+**Explainer Video URL:** https://youtu.be/Ga6iv-GcorY?si=6lIOB_YIvjDKqoqt
+
 A single shell script [`setup_project.sh`] that **bootstraps** a complete Student
 Attendance Tracker workspace using *Infrastructure as Code* principles:
 reproducible structure, one-command setup, and no human error.
 
-Running the script builds this layout (where `{input}` is the name you provide):
+Running the script builds this layout [where `{input}` is the name you provide]:
 
 ```
 attendance_tracker_{input}/
